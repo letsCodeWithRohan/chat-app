@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home | Chat App</title>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+</style>
+
+<body class="font-[Outfit]">
+  <div class='flex h-screen overflow-hidden w-full'>
+
+    <!-- Side Bar Component -->
+    <div class='w-1/5 hidden min-h-screen bg-base-100 py-4 md:flex gap-3 flex-col'>
+            <div class="flex items-center justify-between px-4">
+                <a href="/" class="text-lg">WhatsApp</a>
+                <div class="dropdown">
+                    <div tabindex="0" role="button" class="">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h7" />
+                        </svg>
+                    </div>
+                    <ul tabindex="0"
+                        class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/profile">Profile</a></li>
+                        <li><a href="/logout">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="px-4">
+                <label class="input w-full">
+                    <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2.5" fill="none"
+                            stroke="currentColor">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.3-4.3"></path>
+                        </g>
+                    </svg>
+                    <input type="search" required placeholder="Search" />
+                </label>
+            </div>
+            <div class="px-4 overflow-y-auto">
+                <% users.forEach((eachuser) => { %>
+                <a href="/chat/<%= eachuser.id %>" class="flex justify-between items-center hover:bg-base-200 rounded-md <%= eachuser.id === user.id ? 'bg-base-200' : '' %> p-2 cursor-pointer">
+
+                    <div class="flex w-full gap-2 items-center">
+                        <div class="avatar avatar-offline">
+                            <div class="w-12 rounded-full">
+                                <img src="<%= eachuser.profile_image %>" />
+                            </div>
+                        </div>
+                        <div class="flex flex-col justify-center">
+                            <p class="text-gray-300 text-sm"><%= eachuser.fullname %></p>
+                            <span class="text-slate-400 text-xs">
+                                <p>@<%= eachuser.username %></p>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-1 items-center justify-center">
+                        <p class="text-[9px]">08:21</p>
+                        <span
+                            class="text-[10px] w-[14px] h-[14px] bg-emerald-600 text-white rounded-full flex items-center justify-center">1</span>
+                    </div>
+                </a>
+                <% }) %>
+            </div>
+        </div>
+    <!-- End of Side Bar -->
+    <!-- Chat Div Component -->
+    <div class='md:w-3/5 w-full h-screen flex flex-col justify-between'>
+
+      <div class='w-full flex items-center justify-between p-2 bg-base-200'>
+        <div class='flex items-center gap-2'>
+          <div class="avatar avatar-online">
+            <div class="w-12 rounded-full">
+              <img src="<%= user.profile_image %>" />
+            </div>
+          </div>
+          <p class='text-lg text-slate-400 font-semibold'><%= user.fullname %></p>
+        </div>
+        <div class='flex items-center gap-2'>
+          <div
+            class='text-violet-500 text-xl bg-transparent hover:bg-violet-500 hover:text-white h-10 w-10 rounded-full flex items-center justify-center'>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone"
+              viewBox="0 0 16 16">
+              <path
+                d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.6 17.6 0 0 0 4.168 6.608 17.6 17.6 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.68.68 0 0 0-.58-.122l-2.19.547a1.75 1.75 0 0 1-1.657-.459L5.482 8.062a1.75 1.75 0 0 1-.46-1.657l.548-2.19a.68.68 0 0 0-.122-.58zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z" />
+            </svg>
+          </div>
+          <div
+            class='text-violet-500 text-xl bg-transparent hover:bg-violet-500 hover:text-white h-10 w-10 rounded-full flex items-center justify-center'>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+              class="bi bi-camera-video" viewBox="0 0 16 16">
+              <path fill-rule="evenodd"
+                d="M0 5a2 2 0 0 1 2-2h7.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 4.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 13H2a2 2 0 0 1-2-2zm11.5 5.175 3.5 1.556V4.269l-3.5 1.556zM2 4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1z" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div id="chatBox" class='w-full gap-2 flex flex-col overflow-y-auto bg-base-200 border-slate-700 p-3 border-1 flex-1'>
+        <div class="chat chat-start">
+          <div class="chat-image avatar">
+            <div class="w-10 rounded-full">
+              <img alt="Tailwind CSS chat bubble component"
+                src="<%= user.profile_image %>" />
+            </div>
+          </div>
+          <div class="chat-header">
+            <%= user.username %>
+            <time class="text-xs opacity-50">12:45</time>
+          </div>
+          <div class="chat-bubble">You were the Chosen One!</div>
+        </div>
+        <div class="chat chat-end">
+          <div class="chat-image avatar">
+            <div class="w-10 rounded-full">
+              <img alt="Tailwind CSS chat bubble component"
+                src="<%= loggedInUser.profile_image %>" />
+            </div>
+          </div>
+          <div class="chat-header">
+            You
+            <time class="text-xs opacity-50">12:46</time>
+          </div>
+          <div class="chat-bubble">I hate you!</div>
+        </div>
+      </div>
+
+      <div class='w-full bg-base-200 py-2 px-4 flex items-center'>
+
+        <div
+          class='text-violet-500 text-xl bg-transparent hover:bg-violet-500 hover:text-white h-10 w-10 rounded-full flex items-center justify-center'>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-emoji-smile"
+            viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+            <path
+              d="M4.285 9.567a.5.5 0 0 1 .683.183A3.5 3.5 0 0 0 8 11.5a3.5 3.5 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683M7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5m4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5" />
+          </svg>
+        </div>
+
+        <input id="msgDiv" type="text" name="message" class='input input-ghost flex-1 border-0 focus:outline-0'
+          placeholder='Type here...' />
+
+        <div
+        id="sendBtn"
+          class='text-violet-500 text-xl bg-transparent hover:bg-violet-500 hover:text-white h-10 w-10 rounded-full flex items-center justify-center'>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send"
+            viewBox="0 0 16 16">
+            <path
+              d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z" />
+          </svg>
+        </div>
+
+      </div>
+    </div>
+    <!-- End of Chat Div -->
+
+    <!-- RightDiv -->
+    <div class='w-1/5 hidden md:block h-screen bg-base-100 p-4'>
+      <div class='flex flex-col items-center gap-3 pt-4'>
+        <img class='w-36 h-36 rounded-full object-cover object-center'
+          src="<%= user.profile_image %>"
+          alt="" />
+        <h3 class='text-xl font-semibold'><%= user.fullname %></h3>
+        <h4 class='text-md text-gray-500'>@<%= user.username %></h4>
+        <div class='w-full h-[1px] bg-slate-200 rounded'></div>
+        <div class='flex w-full flex-col gap-2'>
+          <p class='text-md font-semibold'>Phone</p>
+          <span class='text-xs text-slate-400'>+91 7265001770</span>
+        </div>
+        <div class='flex w-full flex-col gap-2'>
+          <p class='text-md font-semibold'>Description</p>
+          <span class='text-xs text-slate-400'>Available</span>
+        </div>
+        <div class='flex w-full flex-col gap-2'>
+          <p class='text-md font-semibold'>Email</p>
+          <span class='text-xs text-slate-400'><%= user.email %></span>
+        </div>
+        <div class='bg-base-300 flex-1 overflow-x-hidden overflow-y-auto grid grid-cols-3 grid-rows-auto w-full gap-1'>
+          <img
+            src="https://cdn.dribbble.com/users/7121791/avatars/normal/315b21c5ba82ee9ed54f3d01939d846a.png?1631937011"
+            alt="" />
+          <img
+            src="https://cdn.dribbble.com/users/7121791/avatars/normal/315b21c5ba82ee9ed54f3d01939d846a.png?1631937011"
+            alt="" />
+          <img
+            src="https://cdn.dribbble.com/users/7121791/avatars/normal/315b21c5ba82ee9ed54f3d01939d846a.png?1631937011"
+            alt="" />
+          <img
+            src="https://cdn.dribbble.com/users/7121791/avatars/normal/315b21c5ba82ee9ed54f3d01939d846a.png?1631937011"
+            alt="" />
+          <img
+            src="https://cdn.dribbble.com/users/7121791/avatars/normal/315b21c5ba82ee9ed54f3d01939d846a.png?1631937011"
+            alt="" />
+          <img
+            src="https://cdn.dribbble.com/users/7121791/avatars/normal/315b21c5ba82ee9ed54f3d01939d846a.png?1631937011"
+            alt="" />
+        </div>
+      </div>
+    </div>
+    <!-- End of Right Div -->
+  </div>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.min.js"></script> -->
+  <script>
+    // const socket = io();
+
+    const chatBox = document.getElementById("chatBox")
+    const msgInput = document.getElementById("msgDiv")
+    const sendBtn = document.getElementById("sendBtn")
+
+    let date = new Date()
+    
+    sendBtn.addEventListener('click',() => {
+    let sentMsg = `<div class="chat chat-end">
+  <div class="chat-image avatar">
+    <div class="w-10 rounded-full">
+      <img
+        alt="Tailwind CSS chat bubble component"
+        src="<%= loggedInUser.profile_image %>"
+      />
+    </div>
+  </div>
+  <div class="chat-header">
+    You
+    <time class="text-xs opacity-50">${date.toLocaleTimeString('en-US',{
+hour: '2-digit',
+minute: '2-digit'
+})}</time>
+  </div>
+  <div class="chat-bubble">${msgInput.value}</div>
+</div>`;
+  chatBox.innerHTML += sentMsg;
+  // socket.emit("sent", msgInput.value)
+  msgInput.value = ''
+})
+
+  </script>
+</body>
+
+</html>

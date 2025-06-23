@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | Chat App</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+</style>
+
+<body class="font-[Outfit] ">
+    <div class='flex h-screen overflow-hidden w-full'>
+
+        <!-- Side Bar Component -->
+        <div class='md:w-1/5 w-full min-h-screen bg-base-100 py-4 flex gap-3 flex-col'>
+            <div class="flex md:flex-row flex-row-reverse items-center justify-between px-4">
+                <div class="block md:hidden"></div>
+                <a href="/" class="text-lg">WhatsApp</a>
+                <div class="dropdown">
+                    <div tabindex="0" role="button" class="">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h7" />
+                        </svg>
+                    </div>
+                    <ul tabindex="0"
+                        class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/profile">Profile</a></li>
+                        <li><a href="/logout">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="px-4">
+                <label class="input w-full">
+                    <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2.5" fill="none"
+                            stroke="currentColor">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.3-4.3"></path>
+                        </g>
+                    </svg>
+                    <input type="search" required placeholder="Search" />
+                </label>
+            </div>
+            <div class="px-4 overflow-y-auto">
+                <% users.forEach((user)=> { %>
+                    <a href="/chat/<%= user.id %>"
+                        class="flex justify-between items-center hover:bg-base-200 rounded-md p-2 cursor-pointer">
+
+                        <div class="flex w-full gap-2 items-center">
+                            <div class="avatar avatar-offline" data-user-id="<%= user.id %>">
+                                <div class="w-12 rounded-full">
+                                    <img src="<%= user.profile_image %>" />
+                                </div>
+                            </div>
+                            <div class="flex flex-col justify-center">
+                                <p class="text-gray-300 text-sm">
+                                    <%= user.fullname %>
+                                </p>
+                                <span class="text-slate-400 text-xs">
+                                    <p>@<%= user.username %>
+                                    </p>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-1 items-center justify-center">
+                            <p class="text-[9px]">08:21</p>
+                            <span
+                                class="text-[10px] w-[14px] h-[14px] bg-emerald-600 text-white rounded-full flex items-center justify-center">1</span>
+                        </div>
+                    </a>
+                    <% }) %>
+            </div>
+        </div>
+        <!-- End of Side Bar -->
+        <div class="md:flex justify-center flex-col gap-3 items-center md:w-4/5 hidden h-screen bg-base-200">
+            <img src="/images/entry-image-dark-2.png" alt="" class="">
+            <h3 class="text-gray-200 text-lg">Welcome to the Whatsapp Clone Application</h3>
+            <p class="w-[60%] text-center text-slate-400 text-sm">Select a chat to start a conversation.</p>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.min.js"></script>
+    <script>
+        const socket = io();
+
+        socket.emit('user-connected', '<%= user.id %>');
+
+        // Listen for the 'update-user-status' event from the server
+socket.on('update-user-status', (onlineUsersObject) => {
+    console.log("Online Users (object):", onlineUsersObject);
+
+    // Convert object values to an array (just the user socket IDs or user IDs)
+    const onlineUsersArray = Object.keys(onlineUsersObject);
+    console.log(onlineUsersArray);
+
+    // Get all avatar elements
+    const userAvatarElements = document.querySelectorAll('.avatar');
+
+    userAvatarElements.forEach((element) => {
+        const userId = element.getAttribute('data-user-id');
+
+        // Check if the userId is in the list of online users
+        const isUserOnline = onlineUsersArray.includes(userId);
+
+        // Toggle classes based on user's online status
+        if (isUserOnline) {
+            element.classList.remove('avatar-offline');
+            element.classList.add('avatar-online');
+        } else {
+            element.classList.remove('avatar-online');
+            element.classList.add('avatar-offline');
+        }
+    });
+});
+
+
+
+        socket.on('disconnect', (userId) => {
+            console.log(`User ${userId} disconnected`);
+        });
+    </script>
+</body>
+
+</html>
