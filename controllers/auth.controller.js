@@ -13,7 +13,7 @@ const signupController = async (req,res) => {
             req.flash("error","Username or email already exists");
             return res.redirect("/signup");
         }
-        connection.query("INSERT INTO users (username, email, password, gender, fullname,profile_image) VALUES (?, ?, ?, ? ,?, ?)", [username, email, hashedPassword, gender, fullname,`https://avatar.iran.liara.run/public/${gender=="male"?'boy':'girl'}?username=${username}`], (err, results) => {
+        connection.query("INSERT INTO users (username, email, password, gender, fullname,profile_image) VALUES (?, ?, ?, ? ,?, ?)", [username, email, hashedPassword, gender, fullname,`https://api.dicebear.com/9.x/initials/svg?seed=${fullname.replace(" ","+")}`], (err, results) => {
             if (err) {
                 req.flash("error","Error inserting data");
                 return res.redirect("/signup");
@@ -47,9 +47,11 @@ const loginController = (req, res) => {
         req.session.user = {
             id: user.id,
             username: user.username,
+            gender: user.gender,
             email: user.email,
             fullname: user.fullname,
-            profile_image: user.profile_image
+            profile_image: user.profile_image,
+            bio: user.bio
         };
         res.redirect("/");
     });

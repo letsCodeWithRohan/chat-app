@@ -7,6 +7,20 @@ router.get("/signup",(req,res) => res.render("signup",{
     error: req.flash("error")
 }));
 
+router.get("/profile",isLoggedIn,(req,res) => {
+    res.render("profile",{
+        title: "Profile",
+        user: req.session.user
+    });
+});
+
+router.get("/edit-profile",isLoggedIn,(req,res) => {
+    res.render("edit-profile",{
+        title: "Edit Profile",
+        user: req.session.user
+    });
+});
+
 router.get("/login",(req,res) => res.render("login",{
     title: "Login",
     error: req.flash("error"),

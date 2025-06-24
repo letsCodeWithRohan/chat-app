@@ -92,32 +92,32 @@
         socket.emit('user-connected', '<%= user.id %>');
 
         // Listen for the 'update-user-status' event from the server
-socket.on('update-user-status', (onlineUsersObject) => {
-    console.log("Online Users (object):", onlineUsersObject);
+        socket.on('update-user-status', (onlineUsersObject) => {
+            console.log("Online Users (object):", onlineUsersObject);
 
-    // Convert object values to an array (just the user socket IDs or user IDs)
-    const onlineUsersArray = Object.keys(onlineUsersObject);
-    console.log(onlineUsersArray);
+            // Convert object values to an array (just the user socket IDs or user IDs)
+            const onlineUsersArray = Object.keys(onlineUsersObject);
+            console.log(onlineUsersArray);
 
-    // Get all avatar elements
-    const userAvatarElements = document.querySelectorAll('.avatar');
+            // Get all avatar elements
+            const userAvatarElements = document.querySelectorAll('.avatar');
 
-    userAvatarElements.forEach((element) => {
-        const userId = element.getAttribute('data-user-id');
+            userAvatarElements.forEach((element) => {
+                const userId = element.getAttribute('data-user-id');
 
-        // Check if the userId is in the list of online users
-        const isUserOnline = onlineUsersArray.includes(userId);
+                // Check if the userId is in the list of online users
+                const isUserOnline = onlineUsersArray.includes(userId);
 
-        // Toggle classes based on user's online status
-        if (isUserOnline) {
-            element.classList.remove('avatar-offline');
-            element.classList.add('avatar-online');
-        } else {
-            element.classList.remove('avatar-online');
-            element.classList.add('avatar-offline');
-        }
-    });
-});
+                // Toggle classes based on user's online status
+                if (isUserOnline) {
+                    element.classList.remove('avatar-offline');
+                    element.classList.add('avatar-online');
+                } else {
+                    element.classList.remove('avatar-online');
+                    element.classList.add('avatar-offline');
+                }
+            });
+        });
 
 
 
