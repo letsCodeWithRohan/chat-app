@@ -31,7 +31,7 @@ Chat-App
 </pre>
 
 <h3>API references</h3>
-<a href="https://www.dicebear.com/">Dicebear</a>
+<a href="https://www.dicebear.com/" target="_blank">Dicebear</a>
 
 ## Setup
 
