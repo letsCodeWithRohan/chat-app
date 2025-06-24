@@ -66,15 +66,6 @@ const getAllUsers = (req,res) => {
     })
 }
 
-const isLoggedIn = (req, res, next) => {
-    if (req.session.user) {
-        next();
-    } else {
-        req.flash("error","You must be logged in to access this page");
-        res.redirect("/login");
-    }
-}
-
 const homeController = async (req,res) => {
     connection.query("SELECT * FROM users WHERE NOT id = ? ",[req.session.user.id], (err, results) => {
         if (err) {
@@ -112,7 +103,6 @@ module.exports = {
     signupController,
     loginController,
     getAllUsers,
-    isLoggedIn,
     homeController,
     chatController
 }

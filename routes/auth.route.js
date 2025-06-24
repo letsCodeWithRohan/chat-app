@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const { signupController,loginController,getAllUsers,isLoggedIn,homeController,chatController } = require("../controllers/auth.controller");
+const { isLoggedIn } = require("../middlewares/middleware");
+const { signupController,loginController,getAllUsers,homeController,chatController } = require("../controllers/auth.controller");
 
 router.get("/signup",(req,res) => res.render("signup",{
     title: "Signup",

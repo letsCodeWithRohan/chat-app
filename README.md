@@ -4,17 +4,30 @@
 
 <h3>Folder Structure</h3>
 <pre>
-Instagram
-|--static
+Chat-App
+|--config
+  |-db.js
+|--controllers
+  |-auth.controller.js
+|--middlewares
+  |-middleware.js
+|--public
   |--stylesheets
-  |--uploads
+  |--javascripts
   |--images
-|--templates
-  |-feed.html
-  |-profile.html
-  |-userprofile.html
-  ....
-|-app.py
+|--routes
+  |-auth.route.js
+|--views
+  |-index.ejs
+  |-login.ejs
+  |-signup.ejs
+  |-profile.ejs
+  |-edit-profile.ejs
+|-.env
+|-index.js
+|-package.json
+|-package-lock.json
+|-README.md
 </pre>
 
 <h3>API references</h3>
@@ -44,7 +57,7 @@ npm run start
 ```
 
 <h4>Step-5</h4>
-<p>Development Project</p>
+<p>Start Development</p>
 
 ```bash
 npm run dev
