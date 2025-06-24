@@ -49,6 +49,9 @@ build/Release
 node_modules/
 jspm_packages/
 
+# Will not upload images in the uploads folder
+public/images/uploads/*
+
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
 

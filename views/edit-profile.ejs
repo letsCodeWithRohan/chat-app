@@ -22,6 +22,18 @@
             </div>
             <div class="px-4 flex flex-col gap-2 overflow-y-auto">
 
+                <a href="/"
+                    class="flex text-gray-400 text-sm gap-3 items-center hover:bg-base-200 rounded-md p-2 cursor-pointer">
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-house-door" viewBox="0 0 16 16">
+                            <path
+                                d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4z" />
+                        </svg>
+                    </div>
+                    <p>Home</p>
+                </a>
+
                 <a href="/profile"
                     class="flex text-gray-400 text-sm gap-3 bg-base-200 items-center hover:bg-base-200 rounded-md p-2 cursor-pointer">
                     <div>
@@ -106,8 +118,7 @@
                 </div>
                 <div class="flex gap-3">
                     <div class="w-[15vw] h-[15vw] rounded-lg">
-                        <img class="object-cover object-center rounded-lg w-full h-full"
-                            src="<%= user.profile_image %>"
+                        <img class="object-cover object-center rounded-lg w-full h-full" src="<%= user.profile_image %>"
                             alt="">
                     </div>
                     <div class="flex-1 flex flex-col gap-1">
@@ -119,7 +130,8 @@
                             </fieldset>
                             <fieldset class="fieldset w-full">
                                 <legend class="fieldset-legend text-gray-400">username</legend>
-                                <input type="text" class="input w-full" placeholder="Type here" value="<%= user.username %>" />
+                                <input type="text" class="input w-full" placeholder="Type here"
+                                    value="<%= user.username %>" />
                             </fieldset>
                             <fieldset class="fieldset w-full">
                                 <legend class="fieldset-legend text-gray-400">email</legend>
@@ -129,9 +141,9 @@
                             <fieldset class="fieldset">
                                 <legend class="fieldset-legend text-gray-400">Gender</legend>
                                 <select class="select" name="gender">
-                                    <option <%= user.gender == "male" ? "selected" : "" %> value="male">male</option>
-                                    <option <%= user.gender == "female" ? "selected" : "" %> value="female">female</option>
-                                    <option value="other" <%= user.gender == "other" ? "selected" : "" %>>other</option>
+                                    <option <%=user.gender=="male" ? "selected" : "" %> value="male">male</option>
+                                    <option <%=user.gender=="female" ? "selected" : "" %> value="female">female</option>
+                                    <option value="other" <%=user.gender=="other" ? "selected" : "" %>>other</option>
                                 </select>
                             </fieldset>
                         </div>

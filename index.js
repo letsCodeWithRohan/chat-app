@@ -7,6 +7,7 @@ const server = http.createServer(app)
 const {Server} = require("socket.io")
 const io = new Server(server)
 const dotenv = require("dotenv")
+
 dotenv.config();
 
 app.use(session({
@@ -25,6 +26,7 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 
 app.use("/", require("./routes/auth.route"));
+app.use("/", require("./routes/user.route"));
 
 let onlineUsers = {};
 
