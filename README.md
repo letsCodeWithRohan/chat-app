@@ -50,6 +50,31 @@ npm install
 <p>Add your own <mark>Environment Variables</mark></p>
 
 <h4>Step-4</h4>
+<p>SQL Setup</p>
+
+```SQL
+CREATE TABLE messages (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    sender_id INT NOT NULL,
+    receiver_id INT NOT NULL,
+    message TEXT,
+    image VARCHAR(255),
+    time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    -- Only one type of message allowed: TEXT or IMAGE
+    CHECK (
+        (message IS NOT NULL AND image IS NULL) OR
+        (message IS NULL AND image IS NOT NULL)
+    ),
+
+    -- Foreign key constraints
+    CONSTRAINT fk_sender FOREIGN KEY (sender_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT fk_receiver FOREIGN KEY (receiver_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+```
+
+<h4>Step-4</h4>
 <p>Run Project</p>
 
 ```bash
