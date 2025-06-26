@@ -10,6 +10,9 @@
 </head>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+  #chatBox{
+    scroll-behavior: smooth;
+  }
 </style>
 
 <body class="font-[Outfit] w-full h-[100dvh]">
@@ -88,13 +91,14 @@
                 d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
             </svg>
           </a>
-          <div class="avatar avatar-online">
+          <div class="avatar avatar-offline" data-user-id="<%= user.id %>">
             <div class="w-10 md:w-10 rounded-full">
               <img src="<%= user.profile_image %>" />
             </div>
           </div>
-          <p class='text-lg text-slate-400 font-semibold'>
-            <%= user.fullname %>
+          <p class="flex flex-col">
+            <span class='text-lg text-slate-200 font-semibold'><%= user.fullname %></span>
+            <span class="text-xs text-slate-500" id="status">offline</span>
           </p>
         </div>
         <div class='flex items-center gap-2'>
@@ -132,7 +136,7 @@
       </div>
       <!-- Chat Div Top End -->
       <div id="chatBox"
-        class='w-full gap-1 flex flex-col overflow-y-auto bg-base-200 border-slate-700 p-3 border-1 flex-1'>
+        class='w-full gap-1 flex flex-col overflow-y-auto bg-base-200 border-slate-700 md:p-3 px-3 pt-3 pb-15 border-1 flex-1'>
 
         <% messages.forEach((msg)=> { %>
           <% let formattedTime=msg.time.toLocaleTimeString('en-US', {hour: '2-digit' , minute: '2-digit' }) %>
@@ -183,7 +187,7 @@
           </svg>
         </div>
 
-        <input id="msgDiv" type="text" name="message" class='input input-ghost flex-1 border-0 focus:outline-0'
+        <input autocomplete="off" id="msgDiv" type="text" name="message" class='input input-ghost flex-1 border-0 focus:outline-0'
           placeholder='Type here...' />
 
         <div id="sendBtn"
@@ -211,12 +215,12 @@
         </h4>
         <div class='w-full h-[1px] bg-slate-200 rounded'></div>
         <div class='flex w-full flex-col gap-2'>
-          <p class='text-md font-semibold'>Phone</p>
-          <span class='text-xs text-slate-400'>+91 7265001770</span>
+          <p class='text-md font-semibold'>Gender</p>
+          <span class='text-xs text-slate-400'><%= user.gender %></span>
         </div>
         <div class='flex w-full flex-col gap-2'>
           <p class='text-md font-semibold'>Description</p>
-          <span class='text-xs text-slate-400'>Available</span>
+          <span class='text-xs text-slate-400'><%= user.bio %></span>
         </div>
         <div class='flex w-full flex-col gap-2'>
           <p class='text-md font-semibold'>Email</p>
@@ -251,6 +255,8 @@
   <script src="/socket.io/socket.io.js"></script>
   <script>
     const socket = io();
+    const chatBox = document.getElementById("chatBox")
+    chatBox.scrollTop = chatBox.scrollHeight;
 
     socket.emit('user-connected', '<%= loggedInUser.id %>');
 
@@ -268,6 +274,9 @@
 
         // Check if the userId is in the list of online users
         const isUserOnline = onlineUsersArray.includes(userId);
+        // Update the status text based on user's online status
+        const statusText = document.getElementById('status');
+        statusText.textContent = isUserOnline ? 'online' : 'offline';     
 
         // Toggle classes based on user's online status
         if (isUserOnline) {
@@ -280,7 +289,6 @@
       });
     });
 
-    const chatBox = document.getElementById("chatBox")
     const msgInput = document.getElementById("msgDiv")
     const sendBtn = document.getElementById("sendBtn")
 

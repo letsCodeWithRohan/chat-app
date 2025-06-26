@@ -65,8 +65,29 @@ const chatController = async (req, res) => {
     });
 }
 
+const editProfileController = (req,res) => {
+    const {fullname,username,bio,gender} = req.body;
+    const loggedInUser = req.session.user;
+    if(!fullname || !username || !bio){
+        res.send("Please fill all the fields");
+    }else{
+        // Here I have not handles the username already exists or not
+        connection.query("UPDATE users SET fullname = ?, username = ?, bio = ?, gender = ? WHERE id = ?", [fullname, username,bio,gender,loggedInUser.id],(err,result) => {
+            if(err){
+                return res.send("Error : ",err)
+            }
+            loggedInUser.username = username;
+            loggedInUser.fullname = fullname;
+            loggedInUser.bio = bio;
+            loggedInUser.gender = gender;
+            res.redirect("/profile")
+        })
+    }
+}
+
 module.exports = {
     profileChangeController,
     saveChatInDB,
-    chatController
+    chatController,
+    editProfileController
 }

@@ -144,30 +144,32 @@
                         <img class="object-cover object-center rounded-lg w-full h-full" src="<%= user.profile_image %>"
                             alt="">
                     </div>
-                    <div class="flex-1 grid grid-cols-4 grid-rows-auto gap-3">
-                        <div class="w-full flex flex-col gap-1">
-                            <p class="text-sm text-gray-400">Fullname</p>
-                            <span class="text-md">
-                                <%= user.fullname %>
-                            </span>
+                    <div class="flex-1 flex flex-col gap-3 p-3">
+                        <div class="w-full grid grid-cols-4 grid-rows-auto gap-3">
+                            <div class="w-full flex flex-col gap-1">
+                                <p class="text-sm text-gray-400">Fullname</p>
+                                <span class="text-md">
+                                    <%= user.fullname %>
+                                </span>
+                            </div>
+                            <div class="w-full flex flex-col gap-1">
+                                <p class="text-sm text-gray-400">Email</p>
+                                <span class="text-md">
+                                    <%= user.email %>
+                                </span>
+                            </div>
+                            <div class="w-full flex flex-col gap-1">
+                                <p class="text-sm text-gray-400">Username</p>
+                                <span class="text-md">@<%= user.username %></span>
+                            </div>
+                            <div class="w-full flex flex-col gap-1">
+                                <p class="text-sm text-gray-400">Gender</p>
+                                <span class="text-md">
+                                    <%= user.gender %>
+                                </span>
+                            </div>
                         </div>
-                        <div class="w-full flex flex-col gap-1">
-                            <p class="text-sm text-gray-400">Email</p>
-                            <span class="text-md">
-                                <%= user.email %>
-                            </span>
-                        </div>
-                        <div class="w-full flex flex-col gap-1">
-                            <p class="text-sm text-gray-400">Username</p>
-                            <span class="text-md">@<%= user.username %></span>
-                        </div>
-                        <div class="w-full flex flex-col gap-1">
-                            <p class="text-sm text-gray-400">Gender</p>
-                            <span class="text-md">
-                                <%= user.gender %>
-                            </span>
-                        </div>
-                        <div class="w-full flex flex-col gap-1">
+                        <div class="w-full flex flex-col gap-1 pt-3">
                             <p class="text-sm text-gray-400">About</p>
                             <span class="text-md">
                                 <%= user.bio %>

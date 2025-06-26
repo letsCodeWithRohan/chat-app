@@ -105,16 +105,19 @@
             <div class="w-full">
                 <h3 class="text-lg">User Profile</h3>
             </div>
-            <div class="border-gray-600 border-1 rounded-md p-4 flex flex-col gap-3">
-                <div class="flex items-center gap-3">
-                    <a href="/profile" class="">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+            <form method="post" action="/edit-profile" class="border-gray-600 border-1 rounded-md p-4 flex flex-col gap-3">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">        
+                        <a href="/profile" class="">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-arrow-left" viewBox="0 0 16 16">
                             <path fill-rule="evenodd"
-                                d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
+                            d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
                         </svg>
                     </a>
                     <h1 class="text-md text-gray-300">Edit Profile</h1>
+                </div>
+                <button type="submit" class="btn btn-sm btn-primary">Save Changes</button>
                 </div>
                 <div class="flex gap-3">
                     <div class="w-[15vw] h-[15vw] rounded-lg">
@@ -125,18 +128,16 @@
                         <div class="grid grid-cols-4 grid-rows-auto gap-3">
                             <fieldset class="fieldset w-full">
                                 <legend class="fieldset-legend text-gray-400">Fullname</legend>
-                                <input type="text" class="input w-full" placeholder="Type here"
+                                <input type="text" class="input w-full" name="fullname" placeholder="Type here"
                                     value="<%= user.fullname %>" />
                             </fieldset>
                             <fieldset class="fieldset w-full">
                                 <legend class="fieldset-legend text-gray-400">username</legend>
-                                <input type="text" class="input w-full" placeholder="Type here"
-                                    value="<%= user.username %>" />
+                                <input type="text" class="input w-full" placeholder="Type here" name="username" value="<%= user.username %>" />
                             </fieldset>
                             <fieldset class="fieldset w-full">
                                 <legend class="fieldset-legend text-gray-400">email</legend>
-                                <input type="email" class="input w-full" placeholder="Type here"
-                                    value="<%= user.email %>" />
+                                <input type="email" class="input w-full" placeholder="Type here" disabled value="<%= user.email %>" />
                             </fieldset>
                             <fieldset class="fieldset">
                                 <legend class="fieldset-legend text-gray-400">Gender</legend>
@@ -149,12 +150,11 @@
                         </div>
                         <fieldset class="fieldset w-full flex-1">
                             <legend class="fieldset-legend text-gray-400">Your bio</legend>
-                            <textarea class="textarea w-full h-full resize-none" placeholder="Bio"><%= user.bio %>
-                            </textarea>
+                            <textarea class="textarea w-full h-full resize-none" placeholder="Bio" name="bio"><%= user.bio %></textarea>
                         </fieldset>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </body>
