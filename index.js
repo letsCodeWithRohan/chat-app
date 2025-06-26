@@ -1,22 +1,22 @@
 const express = require("express")
 const app = express()
+const dotenv = require("dotenv")
+dotenv.config();
 const session = require("express-session")
 const flash = require("connect-flash")
 const http = require("http")
+const { saveChatInDB } = require('./controllers/user.controller')
 const server = http.createServer(app)
-const {Server} = require("socket.io")
+const { Server } = require("socket.io")
 const io = new Server(server)
-const dotenv = require("dotenv")
-
-dotenv.config();
 
 app.use(session({
-    resave: false,
-    saveUninitialized: false,
-    secret: 'longsecretkey',
-    cookie: {
-        maxAge: 1000 * 60 * 60 * 24 // 1 day
-    }
+  resave: false,
+  saveUninitialized: false,
+  secret: 'longsecretkey',
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24 // 1 day
+  }
 }))
 app.use(flash());
 
@@ -37,6 +37,18 @@ io.on('connection', (socket) => {
     io.emit('update-user-status', onlineUsers); // Sabko bata do
   });
 
+  socket.on('join-room', ({ senderId, receiverId }) => {
+    let roomId = [senderId, receiverId].sort().join("_")
+    socket.join(roomId);
+  })
+
+  socket.on('private-message', ({ senderId, receiverId, message }) => {
+    let roomId = [senderId, receiverId].sort().join("_")
+    io.to(roomId).emit('received-message', {senderId, message });
+    saveChatInDB(senderId,receiverId,message)
+  });
+
+
   // Jab user disconnect ho
   socket.on('disconnect', () => {
     for (let uid in onlineUsers) {
@@ -50,4 +62,4 @@ io.on('connection', (socket) => {
 });
 
 
-server.listen(process.env.PORT,'0.0.0.0',() => console.log(`Server is running on port ${process.env.PORT}`))
+server.listen(process.env.PORT, '0.0.0.0', () => console.log(`Server is running on port ${process.env.PORT}`))

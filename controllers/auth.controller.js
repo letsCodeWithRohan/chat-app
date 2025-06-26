@@ -75,34 +75,9 @@ const homeController = async (req,res) => {
     });
 }
 
-const chatController = async (req,res) => {
-    users = []
-    connection.query("SELECT * FROM users WHERE NOT id = ? ",[req.session.user.id], (err, results) => {
-        if (err) {
-            return res.send(`Error : ${err.message}`);
-        }
-        users = results 
-    });
-    connection.query("SELECT * FROM users WHERE id = ?", [req.params.id], (err, results) => {
-        if (err) {
-            return res.send(`Error : ${err.message}`);
-        }
-        if (results.length === 0) {
-            return res.send("User not found");
-        }
-        let chatUser = results[0];
-        res.render("chat",{ 
-            loggedInUser : req.session.user,
-            user: chatUser,
-            users
-        })
-    });
-}
-
 module.exports = {
     signupController,
     loginController,
     getAllUsers,
     homeController,
-    chatController
 }

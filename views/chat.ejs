@@ -75,9 +75,10 @@
       </div>
     </div>
     <!-- End of Side Bar -->
+
     <!-- Chat Div Component -->
     <div class='md:w-3/5 w-full h-screen flex flex-col justify-between'>
-
+      <!-- Chat Div Top -->
       <div class='w-full flex items-center justify-between p-2 bg-base-200'>
         <div class='flex items-center gap-3'>
           <a href="/" class="text-lg">
@@ -113,31 +114,62 @@
                 d="M0 5a2 2 0 0 1 2-2h7.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 4.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 13H2a2 2 0 0 1-2-2zm11.5 5.175 3.5 1.556V4.269l-3.5 1.556zM2 4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1z" />
             </svg>
           </div>
+          
+          <div class="dropdown dropdown-bottom dropdown-end">
+            <div tabindex="0" role="button" class="h-10 w-10 rounded-full flex items-center justify-center cursor-pointer hover:bg-base-300">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+              class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+              <path
+                d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
+            </svg>
+          </div>
+            <ul tabindex="0" class="dropdown-content menu menu-sm bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+              <li><a href="/delete-chat">Clear Chat</a></li>
+              <li><a>Item 2</a></li>
+            </ul>
+          </div>
         </div>
       </div>
-
+      <!-- Chat Div Top End -->
       <div id="chatBox"
         class='w-full gap-1 flex flex-col overflow-y-auto bg-base-200 border-slate-700 p-3 border-1 flex-1'>
-        <div class="chat chat-start">
-          <div class="chat-bubble flex gap-3 items-end">
-            <p class="text-sm">Hello, world</p>
-            <span class="text-[9px] text-slate-300">8:40</span>
-          </div>
-        </div>
-        <div class="chat chat-end">
-          <div class="chat-bubble chat-bubble-primary flex gap-3 items-end">
-            <p class="text-sm">Hello, world</p>
-            <span class="text-[9px] text-slate-300">8:40</span>
-          </div>
-        </div>
-        <div class="chat chat-end">
-          <div class="chat-bubble chat-bubble-primary flex gap-1 flex-col items-end">
-            <img class="w-45 h-45" src="https://avatars.githubusercontent.com/u/134542326?v=4" alt="">
-            <span class="text-[9px] text-slate-300">8:40</span>
-          </div>
-        </div>
-      </div>
 
+        <% messages.forEach((msg)=> { %>
+          <% let formattedTime=msg.time.toLocaleTimeString('en-US', {hour: '2-digit' , minute: '2-digit' }) %>
+            <% if(msg.sender_id==user.id){ %>
+              <div class="chat chat-start">
+                <div class="chat-bubble flex gap-3 items-end">
+                  <p class="text-sm">
+                    <%= msg.message %>
+                  </p>
+                  <span class="text-[9px] text-slate-300">
+                    <%= formattedTime %>
+                  </span>
+                </div>
+              </div>
+              <% } else {%>
+                <div class="chat chat-end">
+                  <div class="chat-bubble chat-bubble-primary flex gap-3 items-end">
+                    <p class="text-sm">
+                      <%= msg.message %>
+                    </p>
+                    <span class="text-[9px] text-slate-300">
+                      <%= formattedTime %>
+                    </span>
+                  </div>
+                </div>
+                <% } %>
+                  <% }) %>
+
+                    <!--<div class="chat chat-end">
+                  <div class="chat-bubble chat-bubble-primary flex gap-1 flex-col items-end">
+                    <img class="w-45 h-45" src="https://avatars.githubusercontent.com/u/134542326?v=4" alt="">
+                    <span class="text-[9px] text-slate-300">8:40</span>
+                  </div>
+                </div>-->
+
+      </div>
+      <!-- Bottom Input Div -->
       <div
         class='w-full bg-base-200 py-2 px-4 md:relative fixed bottom-0 border-t-1 md:border-0 border-slate-700 flex items-center'>
 
@@ -164,6 +196,7 @@
         </div>
 
       </div>
+      <!-- Bottom Input Div End -->
     </div>
     <!-- End of Chat Div -->
 
@@ -223,11 +256,9 @@
 
     // Listen for the 'update-user-status' event from the server
     socket.on('update-user-status', (onlineUsersObject) => {
-      console.log("Online Users (object):", onlineUsersObject);
 
       // Convert object values to an array (just the user socket IDs or user IDs)
       const onlineUsersArray = Object.keys(onlineUsersObject);
-      console.log(onlineUsersArray);
 
       // Get all avatar elements
       const userAvatarElements = document.querySelectorAll('.avatar');
@@ -255,6 +286,16 @@
 
     let date = new Date()
 
+    msgInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') sendBtn.click();
+    });
+
+    // Join a private room between the two users
+    socket.emit('join-room', {
+      senderId: '<%= loggedInUser.id %>',
+      receiverId: '<%= user.id %>'
+    });
+
     sendBtn.addEventListener('click', () => {
       let sentMsg = `<div class="chat chat-end">
           <div class="chat-bubble chat-bubble-primary flex gap-3 items-end">
@@ -265,10 +306,29 @@
       })}</span></div>
         </div>`
       chatBox.innerHTML += sentMsg;
-      // socket.emit("sent", msgInput.value)
+      socket.emit("private-message", {
+        senderId: '<%= loggedInUser.id %>',
+        receiverId: '<%= user.id %>',
+        message: msgInput.value
+      })
       msgInput.value = ''
+      chatBox.scrollTop = chatBox.scrollHeight;
     })
 
+    socket.on('received-message', ({ senderId, message }) => {
+      if (senderId !== '<%= loggedInUser.id %>') {
+        let sentMsg = `<div class="chat chat-start">
+          <div class="chat-bubble flex gap-3 items-end">
+            <p class="text-sm">${message}</p>
+            <span class="text-[9px] text-slate-300">${date.toLocaleTimeString('en-US', {
+          hour: '2-digit',
+          minute: '2-digit'
+        })}</span></div>
+        </div>`
+        chatBox.innerHTML += sentMsg;
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
+    })
   </script>
 </body>
 

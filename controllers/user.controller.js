@@ -13,17 +13,60 @@ const profileChangeController = async (req, res) => {
             console.error("Rename error:", err);
             return res.redirect("/profile");
         }
-        connection.query("UPDATE users SET profile_image = ? WHERE id = ? ",[newPath.replace("public",""),req.body.id],(err,results) => {
-            if(err){
+        connection.query("UPDATE users SET profile_image = ? WHERE id = ? ", [newPath.replace("public", ""), req.body.id], (err, results) => {
+            if (err) {
                 console.log(err.message);
                 return res.redirect("/profile")
             }
-            req.session.user.profile_image = newPath.replace("public","");
+            req.session.user.profile_image = newPath.replace("public", "");
             return res.redirect("/profile")
         })
     })
 }
 
+const saveChatInDB = (senderId, receiverId, message) => {
+    connection.query("INSERT INTO messages (sender_id,receiver_id,message) VALUES (?,?,?)", [senderId, receiverId, message], (err, result) => {
+        if (err) {
+            console.log(err)
+        }
+        return;
+    })
+}
+
+const chatController = async (req, res) => {
+    let users = []
+    let messages = []
+    connection.query("SELECT * FROM users WHERE NOT id = ? ", [req.session.user.id], (err, results) => {
+        if (err) {
+            return res.send(`Error : ${err.message}`);
+        }
+        users = results
+    });
+    connection.query("SELECT * FROM messages WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?) ORDER BY time", [req.params.id, req.session.user.id, req.session.user.id, req.params.id], (err, result) => {
+        if (err) {
+            return res.send(`Error : ${err.message}`);
+        }
+        messages = result
+    });
+    connection.query("SELECT * FROM users WHERE id = ?", [req.params.id], (err, results) => {
+        if (err) {
+            return res.send(`Error : ${err.message}`);
+        }
+        if (results.length === 0) {
+            return res.send("User not found");
+        }
+        let chatUser = results[0];
+        res.render("chat", {
+            loggedInUser: req.session.user,
+            user: chatUser,
+            users,
+            messages
+        })
+    });
+}
+
 module.exports = {
-    profileChangeController
+    profileChangeController,
+    saveChatInDB,
+    chatController
 }
